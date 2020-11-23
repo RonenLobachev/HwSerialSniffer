@@ -18,3 +18,11 @@ Currently for configurate message size(for threshold) you need to recompile code
 Command for start application is : SerialSniffer.exe Sniffer_Port_A* Sniffer_Port_B* Baudrate
 
 Sniffer_Port_X* - Start as regular serial port name in device manager COMX.  Where X is serial port number
+
+
+
+## Output
+
+After you start application and start to receive data you will see next information:
+
+**Diff :** "Diff between this message and previous received message(Only on RX) in ms" **T:** "Time tag in ms" **[RX/TX]:** "Data, each byte separate with **,** delimiter"

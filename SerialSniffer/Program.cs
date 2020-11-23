@@ -32,60 +32,24 @@ namespace SerialSniffer
         static byte[] ai8TX_Buffer = new byte[i32MessageSize];
         static long i64InitTimestamp;
         static long i64PrevTime;
-        //public static void SerialListnerThread(String strPort, int i32BaudRate, String strPrefix)
-        //{
-        //    byte[] ai8Buffer = new byte[8];
-        //    SerialPort pPort = new SerialPort(strPort, i32BaudRate, Parity.None, 8, StopBits.One);
-        //    pPort.Open();
-        //    while (!bStop)
-        //    {
-        //        while (pPort.BytesToRead < i32MessageSize)
-        //        {
-        //            Thread.Sleep(1);
-        //        }
-        //        pPort.Read(ai8Buffer, 0, i32MessageSize);
-        //        qMsgQ.Enqueue(new SerialData(strPrefix, ai8Buffer, i32MessageSize));
-        //        Thread.Sleep(1);
-        //    }
-        //    pPort.Close();
-        //}
 
         private static void RX_PORT_DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            //String strDataLog;
             i32RX_Count += sp.Read(ai8RX_Buffer, i32RX_Count, i32MessageSize - i32RX_Count);
             if (i32RX_Count < i32MessageSize)
                 return;
             i32RX_Count = 0;
-            //strDataLog = "RX: ";
-            //foreach (byte value in ai8RX_Buffer)
-            //{
-            //    strDataLog += value + ", ";
-            //}
-            //strDataLog += "\r\n";
-            //File.AppendAllText(strPathToLog, strDataLog);
-            //Console.WriteLine(strDataLog);
             qMsgQ.Enqueue(new SerialData("[RX]", ai8RX_Buffer, i32MessageSize));
         }
 
         private static void TX_PORT_DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
-            //String strDataLog;
             i32TX_Count += sp.Read(ai8TX_Buffer, i32TX_Count, i32MessageSize - i32TX_Count);
             if (i32TX_Count < i32MessageSize)
                 return;
             i32TX_Count = 0;
-
-            //strDataLog = "TX: ";
-            //foreach (byte value in ai8TX_Buffer)
-            //{
-            //    strDataLog += value + ", ";
-            //}
-            //strDataLog += "\r\n";
-            //File.AppendAllText(strPathToLog, strDataLog);
-            //Console.WriteLine(strDataLog);
             qMsgQ.Enqueue(new SerialData("[TX]", ai8TX_Buffer, i32MessageSize));
         }
 
@@ -155,7 +119,6 @@ namespace SerialSniffer
                 return;
             }
             Thread pLogerTh = new Thread(LoggerThread);
-            //pLogerTh.Priority = ThreadPriority.BelowNormal;
             pLogerTh.Start();
             Thread.Sleep(2);
             SerialPort pPortRX = new SerialPort(args[0], Int32.Parse(args[2]), Parity.None, 8, StopBits.One);
@@ -170,17 +133,10 @@ namespace SerialSniffer
             i64PrevTime = i64InitTimestamp;
             pPortTX.Open();
             pPortTX.DiscardInBuffer();
-            //Thread pSnif1Th = new Thread(() => SerialListnerThread("COM35", 9600, "[RX]"));
-            //pSnif1Th.Start();
-            //pSnif1Th.Priority = ThreadPriority.Highest;
-            //Thread pSnif2Th = new Thread(() => SerialListnerThread("COM38", 9600, "[TX]"));
-            //pSnif2Th.Priority = ThreadPriority.Highest;
-            //pSnif2Th.Start();
             Console.ReadKey();
             bStop = true;
             pLogerTh.Join();
             Console.WriteLine("End");
-            //Console.ReadKey();
         }
     }
 }

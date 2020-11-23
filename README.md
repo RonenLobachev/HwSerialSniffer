@@ -26,3 +26,5 @@ Sniffer_Port_X* - Start as regular serial port name in device manager COMX.  Whe
 After you start application and start to receive data you will see next information:
 
 **Diff :** "Diff between this message and previous received message(Only on RX) in ms" **T:** "Time tag in ms" **[RX/TX]:** "Data, each byte separate with **,** delimiter"
+
+Same line written to log file (in the same location where is executable). Name of file ComLog.txt.
